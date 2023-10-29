@@ -1,6 +1,7 @@
 import NavBar from "@/components/nav-bar";
 import "/styles/globals.css";
 import TopBar from "@/components/user-bar";
+import Providers from "@/components/Provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -15,9 +16,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TopBar />
-        {children}
-        <NavBar />
+        <Providers>
+          <TopBar />
+          {children}
+          <NavBar />
+        </Providers>
       </body>
     </html>
   );
