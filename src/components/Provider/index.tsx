@@ -10,18 +10,7 @@ const handleLogin = (user: { id: string }) => {
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <PrivyProvider
-      appId={env.NEXT_PUBLIC_PRIVY_APP_ID}
-      onSuccess={handleLogin}
-      config={{
-        loginMethods: ["email", "wallet", "twitter", "google"],
-        appearance: {
-          theme: "light",
-          accentColor: "#676FFF",
-          logo: "https://your-logo-url",
-        },
-      }}
-    >
+    <PrivyProvider appId={env.NEXT_PUBLIC_PRIVY_APP_ID} onSuccess={handleLogin}>
       {children}
     </PrivyProvider>
   );

@@ -1,14 +1,15 @@
-import { Icons } from "./icons";
+"use client";
+import { usePrivy } from "@privy-io/react-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
 
 const TopBar = () => {
+  const { user } = usePrivy();
   return (
-    <div className="top-0 fixed bg-background border-b w-full px-8 py-4 justify-between flex">
+    <div className="top-0 fixed bg-background border-b w-full px-8 py-4 justify-between items-center flex">
       <Avatar>
-        <AvatarFallback>AA</AvatarFallback>
-        <AvatarImage src="https://pbs.twimg.com/profile_images/1718328290191314944/7-8Mp-I0_400x400.jpg" />
+        <AvatarFallback>{user?.google?.name?.slice(0, 2)}</AvatarFallback>
       </Avatar>
+      <p>{user?.google?.name}</p>
     </div>
   );
 };
