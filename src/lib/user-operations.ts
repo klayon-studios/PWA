@@ -1,19 +1,10 @@
-import type {
-  UserOperationRequest,
-  UserOperationStruct,
-} from "@alchemy/aa-core";
-import {
-  toHex,
-  type Client,
-  encodeAbiParameters,
-  keccak256,
-  isHex,
-} from "viem";
+import type { UserOperationRequest, UserOperationStruct } from "@alchemy/aa-core";
+import { toHex, type Client, encodeAbiParameters, keccak256, isHex } from "viem";
 import {
   BASE_GOERLI_ENTRYPOINT_ADDRESS,
   PRE_VERIFICATION_GAS_BUFFER,
   VERIFICATION_GAS_LIMIT_BUFFER,
-} from "./constants";
+} from "../config/constants";
 import { baseGoerli } from "viem/chains";
 import type { AlchemyProvider } from "@alchemy/aa-alchemy";
 
@@ -26,14 +17,13 @@ type AsHex<T> = {
  * Helper function to convert an arbitrary value from a UserOperation (e.g. `nonce`) to a
  * hexadecimal string.
  */
-const formatAsHex = (
+export const formatAsHex = (
   value: undefined | string | Uint8Array | bigint | number
 ): `0x${string}` | undefined => {
   if (value === undefined) {
     return value;
   } else if (typeof value === "string") {
-    if (!isHex(value))
-      throw new Error("Cannot convert a non-hex string to a hex string");
+    if (!isHex(value)) throw new Error("Cannot convert a non-hex string to a hex string");
     return value as `0x${string}`;
   } else {
     // Handles Uint8Array, bigint, and number
@@ -47,9 +37,7 @@ const formatAsHex = (
  * @param userOp {UserOperationStruct}
  * @returns {AsHex<UserOperationStruct>} userOp with all fields transformed to hexstrings
  */
-const formatUserOpAsHex = (
-  userOp: UserOperationStruct
-): AsHex<UserOperationStruct> => {
+const formatUserOpAsHex = (userOp: UserOperationStruct): AsHex<UserOperationStruct> => {
   const {
     sender,
     nonce,
@@ -105,16 +93,10 @@ export const populateWithPaymaster = async (
   const bufferedUserOp: AsHex<UserOperationStruct> = {
     ...formattedUserOp,
     preVerificationGas: formattedUserOp.preVerificationGas
-      ? toHex(
-          BigInt(formattedUserOp.preVerificationGas) +
-            PRE_VERIFICATION_GAS_BUFFER
-        )
+      ? toHex(BigInt(formattedUserOp.preVerificationGas) + PRE_VERIFICATION_GAS_BUFFER)
       : undefined,
     verificationGasLimit: formattedUserOp.verificationGasLimit
-      ? toHex(
-          BigInt(formattedUserOp.verificationGasLimit) +
-            VERIFICATION_GAS_LIMIT_BUFFER
-        )
+      ? toHex(BigInt(formattedUserOp.verificationGasLimit) + VERIFICATION_GAS_LIMIT_BUFFER)
       : undefined,
   };
 
@@ -198,9 +180,7 @@ const packUserOp = (userOp: AsHex<UserOperationStruct>): `0x${string}` => {
  * @param userOp {UserOperationStruct} unsigned user operation
  * @returns {`0x${string}`} hexadecimal string representing the user operation's hash
  */
-const computeUserOpHash = (
-  userOp: AsHex<UserOperationStruct>
-): `0x${string}` => {
+const computeUserOpHash = (userOp: AsHex<UserOperationStruct>): `0x${string}` => {
   const packedUserOp = packUserOp(userOp);
   // address -> `0x${string}`, uint256 -> bigint, bytes32 -> `0x${string}`
   const encodedUserOp = encodeAbiParameters(
@@ -209,11 +189,7 @@ const computeUserOpHash = (
       { name: "entryPoint", type: "address" },
       { name: "chainId", type: "uint256" },
     ],
-    [
-      keccak256(packedUserOp),
-      BASE_GOERLI_ENTRYPOINT_ADDRESS,
-      BigInt(baseGoerli.id),
-    ]
+    [keccak256(packedUserOp), BASE_GOERLI_ENTRYPOINT_ADDRESS, BigInt(baseGoerli.id)]
   );
   const userOpHash = keccak256(encodedUserOp);
   return userOpHash;
