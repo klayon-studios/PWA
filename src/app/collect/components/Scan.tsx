@@ -13,9 +13,10 @@ type ScanProps = {
   //useState setter types
   setStatusText: Dispatch<SetStateAction<string>>;
   setChipSig: Dispatch<SetStateAction<string>>;
+  setSignBlock: Dispatch<SetStateAction<bigint>>;
 };
 
-const Scan = ({ handleNextStep, setStatusText, setChipSig }: ScanProps) => {
+const Scan = ({ handleNextStep, setStatusText, setChipSig, setSignBlock }: ScanProps) => {
   const { smartAccountAddress } = useSmartAccount();
 
   const handleScan = async () => {
@@ -50,6 +51,7 @@ const Scan = ({ handleNextStep, setStatusText, setChipSig }: ScanProps) => {
         });
         // the command has succeeded, display the result to the user
         if (res && res.signature.ether) {
+          setSignBlock(recentBlock);
           setStatusText("success");
           setChipSig(res.signature.ether);
         } else {
@@ -59,7 +61,6 @@ const Scan = ({ handleNextStep, setStatusText, setChipSig }: ScanProps) => {
         // the command has failed, display error to the user
         setStatusText("Scanning failed, click on the button again to retry. Details: " + String(e));
       }
-      // console.log("sig_rw", sig_rw);
     } else {
       setStatusText("error msg missing");
     }
