@@ -1,21 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { encodeFunctionData, parseAbi } from "viem";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useSmartAccount } from "@/hooks/SmartAccountContext";
 import { formatAsHex } from "@/lib/user-operations";
+import { useToast } from "@/components/ui/use-toast";
 import { KPBT_NFT_ADDRESS } from "@/config/constants";
 
 type ScanProps = {
+  setTxHash: Dispatch<SetStateAction<string>>;
   handleNextStep: () => void;
   chipSig: string;
   signBlock: bigint;
 };
 
-const Collect = ({ handleNextStep, chipSig, signBlock }: ScanProps) => {
+const Collect = ({ handleNextStep, chipSig, signBlock, setTxHash }: ScanProps) => {
   const { sendSponsoredUserOperation, smartAccountProvider, smartAccountAddress } =
     useSmartAccount();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const handleCollect = async () => {
     if (!smartAccountProvider || !smartAccountAddress) return;
@@ -39,42 +42,23 @@ const Collect = ({ handleNextStep, chipSig, signBlock }: ScanProps) => {
         }),
       });
 
-      // toast.update(toastId, {
-      //   render: "Waiting for your transaction to be confirmed...",
-      //   type: "info",
-      //   isLoading: true,
-      // });
-
       // Once we have a hash for the user operation, watch it until the transaction has
       // been confirmed.
       const transactionHash = await smartAccountProvider.waitForUserOperationTransaction(
         userOpHash
       );
-
-      // toast.update(toastId, {
-      //   render: (
-      //     <Alert href={`${BASE_GOERLI_SCAN_URL}/tx/${transactionHash}`}>
-      //       Successfully minted! Click here to see your transaction.
-      //     </Alert>
-      //   ),
-      //   type: "success",
-      //   isLoading: false,
-      //   autoClose: 5000,
-      // });
+      setTxHash(transactionHash);
     } catch (error) {
       console.error("Mint failed with error: ", error);
-      // toast.update(toastId, {
-      //   render: (
-      //     <Alert>
-      //       There was an error sending your transaction. See the developer console for more info.
-      //     </Alert>
-      //   ),
-      //   type: "error",
-      //   isLoading: false,
-      //   autoClose: 3000,
-      // });
+      toast({
+        title: "Failed to collect",
+        description:
+          "There was an error sending your transaction. See the developer console for more info.",
+        variant: "destructive",
+      });
     }
     setLoading(false);
+    handleNextStep();
   };
   return (
     <>
