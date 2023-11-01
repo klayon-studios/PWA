@@ -7,7 +7,7 @@ import Collect from "./components/Collect";
 
 import { useState } from "react";
 import Finished from "./components/Finished";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 
 export default function CollectPage() {
