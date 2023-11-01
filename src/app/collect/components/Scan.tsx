@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { hashMessageEIP191SolidityKeccak } from "@/lib/crypto";
