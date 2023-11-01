@@ -7,7 +7,7 @@ import Collect from "./components/Collect";
 
 import { useState } from "react";
 import Finished from "./components/Finished";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 
 export default function CollectPage() {
@@ -17,6 +17,7 @@ export default function CollectPage() {
   const [statusText, setStatusText] = useState("");
   const [chipSig, setChipSig] = useState("");
   const [signBlock, setSignBlock] = useState(BigInt(0));
+  const [txHash, setTxHash] = useState("");
 
   useEffect(() => {
     if (ready && !authenticated) {
@@ -42,11 +43,18 @@ export default function CollectPage() {
     },
     {
       title: "Collect",
-      view: <Collect handleNextStep={handleNextStep} chipSig={chipSig} signBlock={signBlock} />,
+      view: (
+        <Collect
+          handleNextStep={handleNextStep}
+          chipSig={chipSig}
+          signBlock={signBlock}
+          setTxHash={setTxHash}
+        />
+      ),
     },
     {
       title: "Finished",
-      view: <Finished />,
+      view: <Finished txHash={txHash} />,
     },
   ];
 
