@@ -2,23 +2,11 @@ type IconProps = React.HTMLAttributes<SVGElement>;
 import {
   Backpack,
   BadgePlus,
-  BarChart2,
   Check,
-  ChefHat,
-  ChevronsUpDown,
-  Coins,
   ExternalLink,
   Focus,
-  HelpingHand,
   Home,
-  Landmark,
-  Loader,
-  Loader2,
-  PiggyBank,
-  PlusCircle,
   RotateCw,
-  Scale,
-  Scan,
   X,
 } from "lucide-react";
 
@@ -29,33 +17,8 @@ export const Icons = {
   scan: Focus,
   home: Home,
   x: X,
-  help: HelpingHand,
-  barchart: BarChart2,
   externalLink: ExternalLink,
-  chefHat: ChefHat,
-  landmark: Landmark,
-  coins: Coins,
-  piggyBank: PiggyBank,
-  scale: Scale,
-  chevronsUpDown: ChevronsUpDown,
   check: Check,
-  plusCircle: PlusCircle,
-  join: (props: IconProps) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-plus-circle"
-      {...props}
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M8 12h8" />
-      <path d="M12 8v8" />
-    </svg>
-  ),
   logo: (props: IconProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>
       <g clipPath="url(#clip0_1_2)">

@@ -11,10 +11,6 @@ export const publicClient = createPublicClient({
   transport: http(),
 });
 
-// const handleLogin = (user: { id: string }) => {
-//   console.log(`User ${user.id} logged in!`);
-// };
-
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <PrivyProvider
