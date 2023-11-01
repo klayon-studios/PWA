@@ -13,7 +13,7 @@ bun i
 Next, create your own env file by running
 
 ```bash
-cp .env.example.local .env.local
+cp .env.local.example .env.local
 ```
 
 Lastly, run
