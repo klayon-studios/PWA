@@ -15,20 +15,21 @@ type NFTRes = {
 
 export default function Inventory() {
   const { ready, authenticated } = usePrivy();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { smartAccountAddress } = useSmartAccount();
-  // const smartAccountAddress = "0x3A80BbB1d2fa5411E6129771d78e31d702C462e4";
+  // const { smartAccountAddress } = useSmartAccount();
+  const smartAccountAddress = "0x3A80BbB1d2fa5411E6129771d78e31d702C462e4";
   const [nfts, setNfts] = useState<NFTRes | null>();
   useEffect(() => {
     if (smartAccountAddress) {
+      setIsLoading(true);
       const getNfts = async () => {
         const data = await getNFTsForAddress(smartAccountAddress);
         setNfts(data);
+        setIsLoading(false);
       };
       getNfts();
     }
-    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -40,10 +41,10 @@ export default function Inventory() {
   const getStatus = () => {
     if (!isLoading && nfts && nfts?.totalCount > 0) {
       return "hasItems";
-    } else if (!isLoading && nfts && nfts?.totalCount === 0) {
-      return "noItems";
-    } else {
+    } else if (isLoading) {
       return "loading";
+    } else {
+      return "noItems";
     }
   };
 

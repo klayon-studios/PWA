@@ -20,16 +20,16 @@ const menuItems = [
   {
     name: "Home",
     path: "/",
-    icon: <Icons.home className="w-6 h-6" />,
+    icon: <Icons.home className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
     name: "Collect",
     path: "/collect",
-    icon: <Icons.scan className="w-6 h-6" />,
+    icon: <Icons.scan className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
     name: "Inventory",
     path: "/inventory",
-    icon: <Icons.inventory className="w-6 h-6" />,
+    icon: <Icons.inventory className="w-6 h-6" strokeWidth={1.5} />,
   },
 ];
