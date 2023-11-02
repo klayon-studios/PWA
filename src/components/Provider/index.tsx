@@ -1,6 +1,7 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
+import { Toaster } from "@/components/ui/toaster";
 import { SmartAccountProvider } from "@/hooks/SmartAccountContext";
 import { createPublicClient, http } from "viem";
 import { baseGoerli } from "viem/chains";
@@ -32,6 +33,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
       onSuccess={() => router.push("/inventory")}
     >
       <SmartAccountProvider>{children}</SmartAccountProvider>
+      <Toaster />
     </PrivyProvider>
   );
 };
