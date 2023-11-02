@@ -4,6 +4,7 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import { SmartAccountProvider } from "@/hooks/SmartAccountContext";
 import { createPublicClient, http } from "viem";
 import { baseGoerli } from "viem/chains";
+import { useRouter } from "next/navigation";
 import { env } from "../../../env.mjs";
 
 export const publicClient = createPublicClient({
@@ -12,6 +13,7 @@ export const publicClient = createPublicClient({
 });
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   return (
     <PrivyProvider
       appId={env.NEXT_PUBLIC_PRIVY_APP_ID}
@@ -27,6 +29,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
         },
         defaultChain: baseGoerli,
       }}
+      onSuccess={() => router.push("/inventory")}
     >
       <SmartAccountProvider>{children}</SmartAccountProvider>
     </PrivyProvider>
