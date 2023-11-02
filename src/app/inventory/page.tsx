@@ -1,7 +1,9 @@
 "use client";
 
-import { useSmartAccount } from "@/hooks/SmartAccountContext";
 import { getNFTsForAddress } from "@/lib/Alchemy";
+import { useRouter } from "next/navigation";
+import { usePrivy } from "@privy-io/react-auth";
+import { useSmartAccount } from "@/hooks/SmartAccountContext";
 import { useEffect, useState } from "react";
 
 type NFTRes = {
@@ -11,6 +13,8 @@ type NFTRes = {
 };
 
 export default function Inventory() {
+  const { ready, authenticated } = usePrivy();
+  const router = useRouter();
   const { smartAccountAddress } = useSmartAccount();
   // const smartAccountAddress = "0x3A80BbB1d2fa5411E6129771d78e31d702C462e4";
   const [nfts, setNfts] = useState<NFTRes | null>();
@@ -24,20 +28,31 @@ export default function Inventory() {
     }
   }, []);
 
+  useEffect(() => {
+    if (ready && !authenticated) {
+      router.push("/");
+    }
+  }, [ready, authenticated, router]);
+
   return (
     <div className="pt-20">
       <h1 className="text-3xl font-bold p-2">Inventory</h1>
       <div className="grid grid-cols-3 p-2">
-        {nfts?.ownedNfts.map((nft, i) => <Item key={i} data={nft} />)}
+        {nfts &&
+          nfts?.ownedNfts.length > 0 &&
+          nfts.ownedNfts.map((nft, i) => (
+            <Item key={i} metadata={nft.metadata} />
+          ))}
       </div>
     </div>
   );
 }
 
-const Item = ({ data }: any) => {
+const Item = ({ metadata }: any) => {
   return (
     <div className="rounded-lg shadow-lg overflow-hidden m-1 border border-muted-foreground">
-      <img src="https://dl.openseauserdata.com/cache/originImage/files/b8c5130e888de1498955c18026d694d2.png" />
+      <img src={metadata.image} />
+      <h1 className="text-xl font-bold">{metadata.name}</h1>
     </div>
   );
 };
