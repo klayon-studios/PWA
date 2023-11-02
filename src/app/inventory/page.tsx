@@ -55,7 +55,7 @@ const Item = ({ metadata }: any) => {
         <img src={metadata.image} />
       </div>
       <h1 className="text-sm text-center text-muted-foreground">
-        {metadata.name.slice(0, 15)}
+        {`${metadata.name.slice(0, 15)}...`}
       </h1>
     </div>
   );
