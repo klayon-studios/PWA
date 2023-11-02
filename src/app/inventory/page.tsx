@@ -11,8 +11,8 @@ type NFTRes = {
 };
 
 export default function Inventory() {
-  // const { smartAccountAddress } = useSmartAccount();
-  const smartAccountAddress = "0x3A80BbB1d2fa5411E6129771d78e31d702C462e4";
+  const { smartAccountAddress } = useSmartAccount();
+  // const smartAccountAddress = "0x3A80BbB1d2fa5411E6129771d78e31d702C462e4";
   const [nfts, setNfts] = useState<NFTRes | null>();
   useEffect(() => {
     if (smartAccountAddress) {
