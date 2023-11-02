@@ -50,9 +50,13 @@ export default function Inventory() {
 
 const Item = ({ metadata }: any) => {
   return (
-    <div className="rounded-lg shadow-lg overflow-hidden m-1 border border-muted-foreground">
-      <img src={metadata.image} />
-      <h1 className="text-xl font-bold">{metadata.name}</h1>
+    <div>
+      <div className="rounded-lg shadow-lg overflow-hidden m-1 border border-muted-foreground">
+        <img src={metadata.image} />
+      </div>
+      <h1 className="text-sm text-center text-muted-foreground">
+        {metadata.name.slice(0, 15)}
+      </h1>
     </div>
   );
 };
