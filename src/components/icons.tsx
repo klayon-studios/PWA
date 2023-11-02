@@ -7,13 +7,14 @@ import {
   Focus,
   Home,
   RotateCw,
+  Wallet,
   X,
 } from "lucide-react";
 
 export const Icons = {
   loader: RotateCw,
   collect: BadgePlus,
-  inventory: Backpack,
+  inventory: Wallet,
   scan: Focus,
   home: Home,
   x: X,
